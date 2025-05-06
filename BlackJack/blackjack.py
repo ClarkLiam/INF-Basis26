@@ -1,4 +1,5 @@
 from random import randint, shuffle
+import time
 from karten import Stapel, Spielkarte
 # Dies sind Listen, die nicht verändert werden sollen. Solche "Konstanten"
 # werden üblicherweise mit GROSSBUCHSTABEN benannt. 
@@ -62,25 +63,131 @@ if __name__ == "__main__":
     #spieler_hand.hinzufuegen(Spielkarte("♣", "5"))
     #print(spieler_hand.get_punkte())  # Muss 13 ergeben, sonst wäre 21 überschritten
     
-    
-#Main Game#
+deposit = 0
+money = 0
+
 def game():
     dealer_set = BlackJackSet()
     spieler_hand = BlackJackHand()
     dealer_hand = BlackJackHand()
 
+    # Spieler zieht 2 Karten
     spieler_hand.hinzufuegen(dealer_set.ziehe1())
     spieler_hand.hinzufuegen(dealer_set.ziehe1())
 
+    # Dealer zieht 2 Karten
     dealer_hand.hinzufuegen(dealer_set.ziehe1())
     dealer_hand.hinzufuegen(dealer_set.ziehe1())
-    
+
     print(f"Dealer: {dealer_hand.get_karte(0)} ?")
-    print(f"Dealer Punkte: {dealer_hand.get_punkte()}")
+    print()
     print(f"Spieler: {spieler_hand}")
     print(f"Spieler Punkte: {spieler_hand.get_punkte()}")
+    print()
+
+    while spieler_hand.get_punkte() < 21 and spieler_hand.is_bust() == False:
+        action = input("(h)it (s)tand?")
+
+        if action == "h":
+            spieler_hand.hinzufuegen(dealer_set.ziehe1())
+            print(f"Spieler: {spieler_hand}")
+            print(f"Spieler Punkte: {spieler_hand.get_punkte()}")
+            print()
+        elif action == "s":
+            break
+        else:
+            print("Ungültige Eingabe. Bitte 'h' oder 's' eingeben.")
+            continue
+        
+    if spieler_hand.is_bust():
+        print("Spieler hat über 21 Punkte. Dealer gewinnt!")
+        return "loss"
+    else:
+        print("Der Dealer ist Dran.")
+        time.sleep(1.3)
+        print(f"Dealer: {dealer_hand}")
+        print(f"Dealer Punkte: {dealer_hand.get_punkte()}")
+        print()
+        while dealer_hand.get_punkte() < 17:
+            print("Dealer zieht eine Karte...")
+            time.sleep(1.3)
+            dealer_hand.hinzufuegen(dealer_set.ziehe1())
+            print(f"Dealer: {dealer_hand}")
+            print(f"Dealer Punkte: {dealer_hand.get_punkte()}")
+            print()
+    if dealer_hand.is_bust():
+        print("Dealer hat über 21 Punkte. Spieler gewinnt!")
+        return "win"
+    elif spieler_hand.get_punkte() > dealer_hand.get_punkte():
+        print("Spieler gewinnt!")
+        return "win"
+    elif spieler_hand.get_punkte() < dealer_hand.get_punkte():
+        print("Dealer gewinnt!")
+        return "loss"
+    elif spieler_hand.get_punkte() == dealer_hand.get_punkte():
+        print("Unentschieden!")
+        return "draw"
+
+def gamble():
+    global deposit
+    global money
+    while True:
+        money = money_handling()
+        result = game()
+        money_processing(money, result)
+        print(f"Sie haben noch {deposit} Euro übrig.")
+        while(deposit > 0):
+            play_again = input("Möchten Sie noch einmal spielen? (j/n): ")
+            if play_again.lower() != "j":
+                print("Danke fürs Spielen!")
+                break
+        if deposit <= 0:
+            print("Sie haben kein Geld mehr. Spiel beendet.")
+            
+
+def depositmoney():
+    amount = input("Wie viel Geld möchten Sie einzahlen? ")
+    print("processing deposit")
+    print(f"Sie haben {amount} Euro eingezahlt.")
+    print("Willkommen bei BlackJack!")
+    return amount
 
 
+def money_handling():
+    global deposit
+    global money
 
-print("Willkommen zu BlackJack!")
-game()
+    amount = input("Wie viel Geld möchten Sie setzen? ")
+    if amount.isdigit():
+        amount = int(amount)
+        if amount > deposit:
+            print("Sie haben nicht genug Geld.")
+            print(f"Sie haben {deposit} Euro zur Verfügung.")
+            money_handling()
+        else:
+            deposit -= amount
+            print(f"Sie haben {amount} Euro gesetzt.")
+            return amount
+    else:
+        print("Ungültiger Betrag. Bitte geben Sie eine Zahl ein.")
+        money_handling()
+        
+    
+def money_processing(money, result):
+    global deposit
+    if result == "win":
+        deposit += money * 2
+        print(f"Sie haben {money} Euro gewonnen!")
+    elif result == "loss":
+        deposit -= money
+        print(f"Sie haben {money} Euro verloren.")
+    elif result == "draw":
+        deposit += money
+        print("Unentschieden! Ihr Geld wird zurückerstattet.")
+    else:
+        print("Fehler bei der Ergebnisverarbeitung.")
+    print(f"Sie haben noch {deposit} Euro übrig.")
+
+
+deposit = int(depositmoney())
+gamble()

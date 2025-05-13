@@ -65,6 +65,7 @@ if __name__ == "__main__":
     
 deposit = 0
 money = 0
+name = 0
 
 def game():
     dealer_set = BlackJackSet()
@@ -90,8 +91,8 @@ def game():
 
         if action == "h":
             spieler_hand.hinzufuegen(dealer_set.ziehe1())
-            print(f"Spieler: {spieler_hand}")
-            print(f"Spieler Punkte: {spieler_hand.get_punkte()}")
+            print(f"{name}: {spieler_hand}")
+            print(f"{name} Punkte: {spieler_hand.get_punkte()}")
             print()
         elif action == "s":
             break
@@ -100,7 +101,7 @@ def game():
             continue
         
     if spieler_hand.is_bust():
-        print("Spieler hat über 21 Punkte. Dealer gewinnt!")
+        print(f"{name} hat über 21 Punkte. Dealer gewinnt!")
         return "loss"
     else:
         print("Der Dealer ist Dran.")
@@ -116,10 +117,10 @@ def game():
             print(f"Dealer Punkte: {dealer_hand.get_punkte()}")
             print()
     if dealer_hand.is_bust():
-        print("Dealer hat über 21 Punkte. Spieler gewinnt!")
+        print(f"Dealer hat über 21 Punkte. {name} gewinnt!")
         return "win"
     elif spieler_hand.get_punkte() > dealer_hand.get_punkte():
-        print("Spieler gewinnt!")
+        print(f"{name} gewinnt!")
         return "win"
     elif spieler_hand.get_punkte() < dealer_hand.get_punkte():
         print("Dealer gewinnt!")
@@ -131,21 +132,29 @@ def game():
 def gamble():
     global deposit
     global money
+
     while True:
         money = money_handling()
         result = game()
-        money_processing(money, result)
+        deposit = money_processing(money, result)
         print(f"Sie haben noch {deposit} Euro übrig.")
         while(deposit > 0):
             play_again = input("Möchten Sie noch einmal spielen? (j/n): ")
             if play_again.lower() != "j":
                 print("Danke fürs Spielen!")
+                quit()
+            elif play_again.lower() == "j":
+                print("Willkommen zurück!")
                 break
         if deposit <= 0:
             print("Sie haben kein Geld mehr. Spiel beendet.")
             
 
 def depositmoney():
+    global name
+    name = input("Wie heißen Sie? ")
+    print(f"Willkommen {name}!")
+
     amount = input("Wie viel Geld möchten Sie einzahlen? ")
     print("processing deposit")
     print(f"Sie haben {amount} Euro eingezahlt.")
@@ -179,14 +188,15 @@ def money_processing(money, result):
         deposit += money * 2
         print(f"Sie haben {money} Euro gewonnen!")
     elif result == "loss":
-        deposit -= money
         print(f"Sie haben {money} Euro verloren.")
     elif result == "draw":
         deposit += money
         print("Unentschieden! Ihr Geld wird zurückerstattet.")
     else:
         print("Fehler bei der Ergebnisverarbeitung.")
-    print(f"Sie haben noch {deposit} Euro übrig.")
+
+    return deposit
+
 
 
 deposit = int(depositmoney())

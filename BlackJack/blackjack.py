@@ -148,8 +148,8 @@ def gamble():
                 break
         if deposit <= 0:
             print("Sie haben kein Geld mehr. Spiel beendet.")
+            break
             
-
 def depositmoney():
     global name
     name = input("Wie heißen Sie? ")
@@ -157,10 +157,10 @@ def depositmoney():
 
     amount = input("Wie viel Geld möchten Sie einzahlen? ")
     print("processing deposit")
+    time.sleep(1)
     print(f"Sie haben {amount} Euro eingezahlt.")
     print("Willkommen bei BlackJack!")
     return amount
-
 
 def money_handling():
     global deposit
@@ -180,8 +180,7 @@ def money_handling():
     else:
         print("Ungültiger Betrag. Bitte geben Sie eine Zahl ein.")
         money_handling()
-        
-    
+          
 def money_processing(money, result):
     global deposit
     if result == "win":
@@ -196,8 +195,6 @@ def money_processing(money, result):
         print("Fehler bei der Ergebnisverarbeitung.")
 
     return deposit
-
-
 
 deposit = int(depositmoney())
 gamble()

@@ -1,23 +1,42 @@
 import random
 
-# Define card values
-card_values = {
-    '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10,
-    'J': 10, 'Q': 10, 'K': 10, 'A': 11
-}
+class Card:
+    """Represents a single playing card."""
+    def __init__(self, rank, value):
+        self.rank = rank
+        self.value = value
 
-# Create a standard deck of cards
-deck = [rank for rank in card_values.keys()] * 4
+    def __str__(self):
+        return self.rank
 
-def deal_card(deck):
-    """Deals a card from the deck."""
-    return deck.pop(random.randint(0, len(deck) - 1))
+class Deck:
+    """Represents a deck of playing cards."""
+    def __init__(self):
+        self.cards = []
+        self.build_deck()
+
+    def build_deck(self):
+        """Builds a standard deck of 52 cards."""
+        card_values = {
+            '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10,
+            'J': 10, 'Q': 10, 'K': 10, 'A': 11
+        }
+        for rank, value in card_values.items():
+            for _ in range(4):  # Four of each rank
+                self.cards.append(Card(rank, value))
+
+    def shuffle(self):
+        """Shuffles the deck."""
+        random.shuffle(self.cards)
+
+    def deal_card(self):
+        """Deals a card from the deck."""
+        return self.cards.pop()
 
 def calculate_hand_value(hand):
     """Calculates the total value of a hand."""
-    value = sum(card_values[card] for card in hand)
-    # Adjust for Aces if value is over 21
-    ace_count = hand.count('A')
+    value = sum(card.value for card in hand)
+    ace_count = sum(1 for card in hand if card.rank == 'A')
     while value > 21 and ace_count:
         value -= 10
         ace_count -= 1
@@ -25,15 +44,17 @@ def calculate_hand_value(hand):
 
 def display_hand(player, hand):
     """Displays the player's or dealer's hand."""
-    print(f"{player}'s hand: {', '.join(hand)} (Value: {calculate_hand_value(hand)})")
+    hand_str = ', '.join(str(card) for card in hand)
+    print(f"{player}'s hand: {hand_str} (Value: {calculate_hand_value(hand)})")
 
 def blackjack():
-    # Shuffle the deck
-    random.shuffle(deck)
+    # Initialize and shuffle the deck
+    deck = Deck()
+    deck.shuffle()
 
     # Initial deal
-    player_hand = [deal_card(deck), deal_card(deck)]
-    dealer_hand = [deal_card(deck), deal_card(deck)]
+    player_hand = [deck.deal_card(), deck.deal_card()]
+    dealer_hand = [deck.deal_card(), deck.deal_card()]
 
     # Display initial hands
     display_hand("Player", player_hand)
@@ -41,22 +62,22 @@ def blackjack():
 
     # Player's turn
     while True:
-        choice = input("Do you want to 'hit' or 'stand'? ").strip().lower()
-        if choice == 'hit':
-            player_hand.append(deal_card(deck))
+        choice = input("Do you want to 'hit' (h) or 'stand' (s)? ").strip().lower()
+        if choice == 'h':
+            player_hand.append(deck.deal_card())
             display_hand("Player", player_hand)
             if calculate_hand_value(player_hand) > 21:
                 print("Player busts! Dealer wins.")
                 return
-        elif choice == 'stand':
+        elif choice == 's':
             break
         else:
-            print("Invalid choice. Please choose 'hit' or 'stand'.")
+            print("Invalid choice. Please choose 'h' or 's'.")
 
     # Dealer's turn
     display_hand("Dealer", dealer_hand)
     while calculate_hand_value(dealer_hand) < 17:
-        dealer_hand.append(deal_card(deck))
+        dealer_hand.append(deck.deal_card())
         display_hand("Dealer", dealer_hand)
         if calculate_hand_value(dealer_hand) > 21:
             print("Dealer busts! Player wins.")

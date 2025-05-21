@@ -14,7 +14,7 @@ willkommen!**
 
 ## Prompts & Comments (with matching commit)
 
-### Prompt 1 – Commit: [`ca30916`](https://github.com/ClarkLiam/INF-Basis26/commit/ca30916) <span style="color:#2980ff">`ca30916`</span>
+### Prompt 1 – Commit: [`ca30916`](https://github.com/ClarkLiam/INF-Basis26/commit/ca30916) <span style="color:#2980ff"></span>
 Intention to create an working basic game framework with as little input as possible </br>
 
 > **Create a python game based on the classic blackjack casino game, with a proper card set.**
@@ -23,7 +23,7 @@ Intention to create an working basic game framework with as little input as poss
 
 ---
 
-### Prompt 2 – Commit: [`411fb4a`](https://github.com/ClarkLiam/INF-Basis26/commit/411fb4a) <span style="color:#2980ff">`411fb4a`</span>
+### Prompt 2 – Commit: [`411fb4a`](https://github.com/ClarkLiam/INF-Basis26/commit/411fb4a) <span style="color:#2980ff"></span>
 Intention to make 'hit' or 'stand' to 'h' and 's' for better gameflow, also trying to force the cards to be objects </br>
 
 > **Using your working game file adjust the following: Make the playing cards objects and assign them the values needed, also change the hit or stand question to expect 'h' and 's' for hit and stand.**
@@ -32,7 +32,7 @@ Intention to make 'hit' or 'stand' to 'h' and 's' for better gameflow, also tryi
 
 ---
 
-### Prompt 3 – Commit: [`d4d64fb`](https://github.com/ClarkLiam/INF-Basis26/commit/d4d64fb) <span style="color:#2980ff">`d4d64fb`</span>
+### Prompt 3 – Commit: [`d4d64fb`](https://github.com/ClarkLiam/INF-Basis26/commit/d4d64fb) <span style="color:#2980ff"></span>
 Intentiding to add the functionality of a more realistic scenario by adding a play again and a welcome message </br>
 
 > **Now use the given code and add an welcoming message at the beginning of the game as well as an play again option after ending the complete round.**
@@ -41,7 +41,7 @@ Intentiding to add the functionality of a more realistic scenario by adding a pl
 
 ---
 
-### Prompt 4 – Commit: [`b1e05cf`](https://github.com/ClarkLiam/INF-Basis26/commit/b1e05cf) <span style="color:#2980ff">`b1e05cf`</span>
+### Prompt 4 – Commit: [`b1e05cf`](https://github.com/ClarkLiam/INF-Basis26/commit/b1e05cf) <span style="color:#2980ff"></span>
 Intention is to add the functionallity of playing for money (every player starts with 100$) </br>
 
 > **Now add the functionality to play for in game money. every player should begin with 100$ and cannot deposit any more money if he has none left. If the player loses, he will lose his stake, if he wins he will get the doubled amount back, if the game is a tie, the gets back his stake. Also tell the player his current amount of money left and ask for the amount to gamble with in this round.**
@@ -50,7 +50,7 @@ Intention is to add the functionallity of playing for money (every player starts
 
 ---
 
-### Prompt 5 – Commit: [`1eb7d52`](https://github.com/ClarkLiam/INF-Basis26/commit/1eb7d52) <span style="color:#2980ff">`1eb7d52`</span>
+### Prompt 5 – Commit: [`1eb7d52`](https://github.com/ClarkLiam/INF-Basis26/commit/1eb7d52) <span style="color:#2980ff"></span>
 Intention to make the game playable by multiple players, already forcing the use of classes </br>
 
 > **Using the previous code, adjust the game to be playable by multiple players, by including a player class, with the name, balance and all other needed objects for a working game.**
@@ -59,7 +59,7 @@ Intention to make the game playable by multiple players, already forcing the use
 
 ---
 
-### Prompt 6 – Commit: [`fd2f379`](https://github.com/ClarkLiam/INF-Basis26/commit/fd2f379) <span style="color:#2980ff">`fd2f379`</span>
+### Prompt 6 – Commit: [`fd2f379`](https://github.com/ClarkLiam/INF-Basis26/commit/fd2f379) <span style="color:#2980ff"></span>
 Trying to fix the logic error mentioned in the comment to promt 5 </br>
 
 > **The code you created includes an game order mistake, the system is asking for the players stake after showing him the dealers and the players hand, player ask all players to put in there stakes before starting the round**

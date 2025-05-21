@@ -50,7 +50,22 @@ def display_hand(player, hand):
 def blackjack():
     print("Welcome to the Blackjack Game!")
 
-    while True:
+    balance = 100  # Player starts with $100
+
+    while balance > 0:
+        print(f"Your current balance: ${balance}")
+        
+        # Ask for the stake amount
+        while True:
+            try:
+                stake = int(input("Enter your stake for this round: $"))
+                if 0 < stake <= balance:
+                    break
+                else:
+                    print(f"Invalid stake amount. You can bet between $1 and ${balance}.")
+            except ValueError:
+                print("Please enter a valid number.")
+
         # Initialize and shuffle the deck
         deck = Deck()
         deck.shuffle()
@@ -71,6 +86,7 @@ def blackjack():
                 display_hand("Player", player_hand)
                 if calculate_hand_value(player_hand) > 21:
                     print("Player busts! Dealer wins.")
+                    balance -= stake
                     break
             elif choice == 's':
                 break
@@ -85,6 +101,7 @@ def blackjack():
                 display_hand("Dealer", dealer_hand)
                 if calculate_hand_value(dealer_hand) > 21:
                     print("Dealer busts! Player wins.")
+                    balance += stake
                     break
 
         # Determine winner if no busts
@@ -93,10 +110,18 @@ def blackjack():
             dealer_value = calculate_hand_value(dealer_hand)
             if player_value > dealer_value:
                 print("Player wins!")
+                balance += stake
             elif player_value < dealer_value:
                 print("Dealer wins!")
+                balance -= stake
             else:
                 print("It's a tie!")
+                # Balance remains unchanged
+
+        # Check if the player can continue
+        if balance <= 0:
+            print("You have no money left to play. Game over!")
+            break
 
         # Ask if the player wants to play again
         play_again = input("Do you want to play again? (y/n): ").strip().lower()

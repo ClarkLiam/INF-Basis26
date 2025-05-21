@@ -39,6 +39,7 @@ class Player:
         self.name = name
         self.balance = 100
         self.hand = []
+        self.stake = 0
 
     def display_hand(self):
         """Displays the player's hand."""
@@ -66,35 +67,37 @@ def blackjack():
         deck = Deck()
         deck.shuffle()
 
-        # Clear previous hands
-        for player in players:
-            player.hand = []
-
-        # Initial deal
-        dealer_hand = [deck.deal_card(), deck.deal_card()]
-        for player in players:
-            player.hand = [deck.deal_card(), deck.deal_card()]
-
-        # Players' turns
+        # Ask for stakes before dealing cards
         for player in players:
             if player.balance <= 0:
                 print(f"{player.name} has no money left to play.")
                 continue
 
             print(f"\n{player.name}'s turn (Balance: ${player.balance})")
-            player.display_hand()
-            print(f"Dealer's hand: {dealer_hand[0]}, ?")
-
-            # Ask for the stake amount
             while True:
                 try:
                     stake = int(input(f"{player.name}, enter your stake for this round: $"))
                     if 0 < stake <= player.balance:
+                        player.stake = stake
                         break
                     else:
                         print(f"Invalid stake amount. You can bet between $1 and ${player.balance}.")
                 except ValueError:
                     print("Please enter a valid number.")
+
+        # Initial deal
+        dealer_hand = [deck.deal_card(), deck.deal_card()]
+        for player in players:
+            if player.balance > 0:
+                player.hand = [deck.deal_card(), deck.deal_card()]
+
+        # Players' turns
+        for player in players:
+            if player.balance <= 0:
+                continue
+
+            player.display_hand()
+            print(f"Dealer's hand: {dealer_hand[0]}, ?")
 
             # Player's decision
             while True:
@@ -104,7 +107,7 @@ def blackjack():
                     player.display_hand()
                     if calculate_hand_value(player.hand) > 21:
                         print(f"{player.name} busts! Dealer wins.")
-                        player.balance -= stake
+                        player.balance -= player.stake
                         break
                 elif choice == 's':
                     break
@@ -126,10 +129,10 @@ def blackjack():
             if player_value <= 21:
                 if dealer_value > 21 or player_value > dealer_value:
                     print(f"{player.name} wins!")
-                    player.balance += stake
+                    player.balance += player.stake
                 elif player_value < dealer_value:
                     print(f"{player.name} loses.")
-                    player.balance -= stake
+                    player.balance -= player.stake
                 else:
                     print(f"{player.name} ties with the dealer.")
                     # Balance remains unchanged

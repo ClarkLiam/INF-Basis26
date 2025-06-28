@@ -1,0 +1,15 @@
+Nötige zusaätzliche Tabellen:
+    Tabelle - gruppen:
+        Attribute:
+        - Gruppenname
+        - GNR
+        - Gründer PNR
+        - Gründungsdatum, etc...
+    Verknüpfungstablle - benutzer_gruppe:
+        Einträge:
+        - PNR
+        - GNR
+
+Änderung an alten Tabellen:
+    Tabbelle - benutzer:
+        Attribut zusätzlich - GNR
